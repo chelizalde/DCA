@@ -1,6 +1,6 @@
 TARGET=teoriadecontrol
 OUTDIR=./PDF's/
-.PHONY: all completebook completeebook book ebook movebook moveebook clean
+.PHONY: all completebook completeebook book ebook movebook moveebook clean preview
 
 all: completebook completeebook clean
 
@@ -9,18 +9,18 @@ completebook: book movebook
 completeebook: ebook moveebook
 
 book:
-	${MAKE} clean
+	@${MAKE} clean
 	@echo "==============================================="
 	@echo "Compilando con pdflatex, el archivo:" $(TARGET)
-	@pdflatex -interaction=batchmode "\newif\ifebook\ebookfalse\input{$(TARGET).tex}"
+	@pdflatex -interaction=batchmode "\newif\ifebook\ebookfalse\input{$(TARGET).tex}" || cat $(TARGET).log | grep -A1 "!"
 	@pdflatex -interaction=batchmode "\newif\ifebook\ebookfalse\input{$(TARGET).tex}"
 	@pdflatex -interaction=batchmode "\newif\ifebook\ebookfalse\input{$(TARGET).tex}"
 
 ebook:
-	${MAKE} clean
+	@${MAKE} clean
 	@echo "==============================================="
 	@echo "Compilando con pdflatex, el archivo:" $(TARGET)
-	@pdflatex -interaction=batchmode "\newif\ifebook\ebooktrue\input{$(TARGET).tex}"
+	@pdflatex -interaction=batchmode "\newif\ifebook\ebooktrue\input{$(TARGET).tex}" || cat $(TARGET).log | grep -A1 "!"
 	@pdflatex -interaction=batchmode "\newif\ifebook\ebooktrue\input{$(TARGET).tex}"
 	@pdflatex -interaction=batchmode "\newif\ifebook\ebooktrue\input{$(TARGET).tex}"
 
@@ -37,4 +37,11 @@ moveebook:
 clean:
 	@echo "==============================================="
 	@echo "Quitando archivos irrelevantes."
-	@rm -rf *.aux *.log *.fdb_latexmk *.synctex.gz *.out *.tdo *toc
+	@rm -rf *.aux *.log *.fdb_latexmk *.synctex.gz *.out *.tdo *.toc
+
+preview:
+	@${MAKE} clean
+	@echo "==============================================="
+	@echo "Compilando con pdflatex, el archivo:" $(TARGET)
+	@pdflatex -interaction=batchmode "\newif\ifebook\ebookfalse\input{$(TARGET).tex}" || cat $(TARGET).log | grep -A1 "!"
+	@${MAKE} clean

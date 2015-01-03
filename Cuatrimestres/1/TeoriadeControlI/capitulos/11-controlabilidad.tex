@@ -1,3 +1,6 @@
+%-------------------------------------------------------------------------------
+%	EMPIEZA CAPITULO
+%-------------------------------------------------------------------------------
 
 \chapter{Controlabilidad y asignación de polos}
 
@@ -14,22 +17,12 @@
     y & = & c^T x + d u \nonumber
     \end{eqnarray}
 
-    donde $x \in \mathbbm{R}^n$ y $u,y \in \mathbbm{R}$.
+    donde $x \in \mathbb{R}^n$ y $u,y \in \mathbb{R}$.
 
     \begin{figure}
     \centering
     \resizebox{\textwidth}{!}{
-	    \tikzstyle{input} = [coordinate]
-        \tikzstyle{output} = [coordinate]
         \tikzstyle{block} = [draw, rectangle, minimum height=3em, minimum width=4em]
-        \tikzstyle{sum} = [draw, circle]
-        \tikzstyle{init} = [pin edge={to-, thin, black}]
-        \tikzstyle{vecArrow} = [thick, decoration={markings,mark=at position
-             1 with {\arrow[semithick]{open triangle 60}}},
-             double distance=1.4pt, shorten >= 5.5pt,
-             preaction = {decorate},
-             postaction = {draw,line width=1.4pt, white,shorten >= 4.5pt}]
-        \tikzstyle{innerWhite} = [semithick, white,line width=1.4pt, shorten >= 4.5pt]
 
         \begin{tikzpicture}[auto, node distance=2cm, >=latex']
             \node [input, name=entrada] {};
@@ -60,6 +53,7 @@
             \draw [innerWhite] (v) |- (a);
             \draw [innerWhite] (a) -| (s1);
         \end{tikzpicture}}
+    \caption{\label{dia:contro1}Diagrama de bloques de una representación en espacio de estados simplificado.}
 	\end{figure}
 
     Problema. Se desea encontrar una ley de control $u = f(x)$, que nos permita asignar los polos a voluntad.
@@ -67,17 +61,26 @@
     Sabemos que:
 
     \begin{description}
-        \item [Polos.] $\left\{ s \in \mathbbm{C} \mid M(s) = 0 \right\} = \left\{ s \in \mathbbm{C} \mid \det{(sI - A)} \right\}$
+        \item [Polos.] $\left\{ s \in \mathbb{C} \mid M(s) = 0 \right\} = \left\{ s \in \mathbb{C} \mid \det{(sI - A)} \right\}$
     \end{description}
 
     Para resolver este problema hay que investigar el concepto estructural de la alcanzabilidad.
+
+%-------------------------------------------------------------------------------
+%	EMPIEZA SECCION
+%-------------------------------------------------------------------------------
 
     \newpage
     \section{Alcanzabilidad y Controlabilidad}
 
         \begin{itemize}
-            \item Una representación de estado se dice controlable, si para cualquier condición inicial, $x(0) = x_0 \in \mathbbm{R}^n$, existe una trayectoria, $x(\cdot)$, solución de la ecuación de estado, tal que en tiempo finito $t_f \in \mathbbm{R}$ se llega al origen $\left( x(t_f) = 0 \right)$.
-            \item Una representación de estado se dice alcanzable, si para cualquier punto $x \in \mathbbm{R}$, existe una trayectoria, $x(\cdot)$, solución de la ecuación de estado, tal que en tiempo finito $t_f \in \mathbbm{R}$ se llega a un punto cualquiera $\left( x(t_f) = x_f \right)$ desde el origen.
+            \item Una representación de estado se dice controlable, si para cualquier condición inicial, $x(0) = x_0 \in \mathbb{R}^n$, existe una trayectoria, $x(\cdot)$, solución de la ecuación de estado, tal que en tiempo finito $t_f \in \mathbb{R}$ se llega al origen $\left( x(t_f) = 0 \right)$.
+
+            \missingfigure{Trayectoria en plano de estados de condicion inicial general al origen}
+
+            \missingfigure{Trayectoria de condicion inicial al origen atraves del tiempo}
+
+            \item Una representación de estado se dice alcanzable, si para cualquier punto $x \in \mathbb{R}$, existe una trayectoria, $x(\cdot)$, solución de la ecuación de estado, tal que en tiempo finito $t_f \in \mathbb{R}$ se llega a un punto cualquiera $\left( x(t_f) = x_f \right)$ desde el origen.
         \end{itemize}
 
         En los sistemas lineales estas dos propiedades están mutuamente implicadas, por lo que se les trata indistinguiblemente. Pero en general:
@@ -98,7 +101,7 @@
             \exp{(A t)} = \sum\limits_{i=0}^{\infty} \frac{1}{i!} A^i t^i = \sum\limits_{i=0}^{n-1} \varphi_i(t) A^i
         \end{equation}
 
-        donde $\varphi_i(t) = \sum\limits_{j=0}^{\infty} \varphi_{ij} t^j$, $\varphi_{ij} \in \mathbbm{R}$, $n \in \mathbbm{N}$, $j \in \mathbbm{Z}^+$. Por lo anterior, tenemos:
+        donde $\varphi_i(t) = \sum\limits_{j=0}^{\infty} \varphi_{ij} t^j$, $\varphi_{ij} \in \mathbb{R}$, $n \in \mathbb{N}$, $j \in \mathbb{Z}^+$. Por lo anterior, tenemos:
 
         \begin{eqnarray}
         x(t) & = & \sum\limits_{i=0}^{n-1} \psi_i(t) A^i b \nonumber \\
@@ -116,7 +119,7 @@
 
         donde $\psi_i(t) = \int_0^t \varphi_i (t - \tau) u(\tau) d \tau$.
 
-        Entonces una condición necesaria para que $x(t_f) = x_f \quad \forall x \in \mathbbm{R}, \forall t_f \in \mathbbm{R}, t_f > 0$, es que la matriz de controlabilidad
+        Entonces una condición necesaria para que $x(t_f) = x_f \quad \forall x \in \mathbb{R}, \forall t_f \in \mathbb{R}, t_f > 0$, es que la matriz de controlabilidad
 
         \begin{equation}
             C_{(A,b)} =
@@ -125,7 +128,7 @@
             \end{pmatrix}
         \end{equation}
 
-        sea de rango pleno por filas, de lo contrario existen componentes de $x(t)$ que siempre seran nulos. En nuestro caso particular $\left( y, u \in \mathbbm{R}^n \right)$:
+        sea de rango pleno por filas, de lo contrario existen componentes de $x(t)$ que siempre seran nulos. En nuestro caso particular $\left( y, u \in \mathbb{R}^n \right)$:
 
         \begin{equation}
             \det{C_{(A,b)}} \ne 0
@@ -156,6 +159,10 @@
             \item Por lo que una condición suficiente y necesaria para que la ecuación de estado sea alcanzable (y por lo tanto controlable), es que su matriz de controlabilidad, $C_{(A,b)}$, sea de rango pleno por filas.
             \item Cuando la matriz de controlabilidad es de rango pleno por filas, se dice que el par $(A, b)$ es controlable.
         \end{itemize}
+
+%-------------------------------------------------------------------------------
+%	EMPIEZA SECCION
+%-------------------------------------------------------------------------------
 
     \newpage
     \section{Asignación de polos}
@@ -192,7 +199,7 @@
 
         en donde, por definición, $\alpha_1(A) \ne 0$ y $\alpha_0(A) = 0$.
 
-        Sea $b \ne 0$, un vector en $\mathbbm{R}^n$ tal que su polinomio mínimo coincide con $\alpha(s)$.
+        Sea $b \ne 0$, un vector en $\mathbb{R}^n$ tal que su polinomio mínimo coincide con $\alpha(s)$.
 
         \begin{eqnarray}
         \alpha_i(A) b & \ne & 0 \quad i \in \{ 1, 2, \dots, \kappa \} \nonumber \\
@@ -315,12 +322,7 @@
         \begin{figure}
             \centering
             \resizebox{\textwidth}{!}{
-                \tikzstyle{input} = [coordinate]
-                \tikzstyle{output} = [coordinate]
-                \tikzstyle{empty} = [coordinate]
                 \tikzstyle{block} = [draw, rectangle, minimum height=2.25em, minimum width=2.25em]
-                \tikzstyle{sum} = [draw, circle]
-                \tikzstyle{init} = [pin edge={to-, thin, black}]
 
                 \begin{tikzpicture}[auto, node distance=1.1cm, >=latex']
                     \node [input, name=entrada] {};
@@ -363,7 +365,8 @@
                     \draw [->] (an1) -| (s1.252);
                     \draw [->] (an)  -| (s1.216);
                 \end{tikzpicture}}
-            \end{figure}
+            \caption{\label{dia:contro2}Diagrama de bloques de la ecuación de estado.}
+        \end{figure}
 
         \begin{description}
             \item [Observaciones.] \mbox{}\\
@@ -401,6 +404,10 @@
 
             \end{enumerate}
         \end{description}
+
+%-------------------------------------------------------------------------------
+%	EMPIEZA SECCION
+%-------------------------------------------------------------------------------
 
     \newpage
     \section{Propiedades de la matriz de controlabilidad}
@@ -450,7 +457,7 @@
                 por lo que, podemos notar la siguiente correspondencia:
 
                 \begin{equation*}
-                    C_{(A_1, b_1)} = \frac{C_{(A, b)}}{T} 
+                    C_{(A_1, b_1)} = \frac{C_{(A, b)}}{T}
                 \end{equation*}
 
                 Mas notablemente podemos notar una manera de calcular la transformación lineal a una forma controlable.
@@ -587,6 +594,10 @@
             Se concluye que la retroalimentaión de estado no afecta a los ceros del sistema; solo puede modificar a los polos controlables.
         \end{enumerate}
 
+%-------------------------------------------------------------------------------
+%	EMPIEZA SECCION
+%-------------------------------------------------------------------------------
+
     \newpage
     \section{Formas canónicas}
         Sea un sistema lineal invariante en el tiempo, una entrada, una salida (SISO), descrito por la siguiente Ecuación Diferencial Ordinaria (EDO):
@@ -595,6 +606,8 @@
             \left( \frac{d^n}{dt^n} + a_1 \frac{d^{n-1}}{dt^{n-1}} + \dots + a_{n-1} \frac{d}{dt} + a_n \right) y(t) = \\
             \left( b_n + b_{n-1} \frac{d}{dt} + \dots + b_1 \frac{d^{n-1}}{dt^{n-1}} \right) u(t)
         \end{multline}
+
+%-------------------------------------------------------------------------------
 
         \subsection{Forma canónica controlador}
 
@@ -630,12 +643,7 @@
         \begin{figure*}
             \centering
             \resizebox{\textwidth}{!}{
-                \tikzstyle{input} = [coordinate]
-                \tikzstyle{output} = [coordinate]
-                \tikzstyle{empty} = [coordinate]
                 \tikzstyle{block} = [draw, rectangle, minimum height=2.25em, minimum width=2.25em]
-                \tikzstyle{sum} = [draw, circle]
-                \tikzstyle{init} = [pin edge={to-, thin, black}]
 
                 \begin{tikzpicture}[auto, node distance=1.1cm, >=latex']
                     \node [input, name=entrada] {};
@@ -693,6 +701,7 @@
                     \draw [->] (b1)  -| (s2.90);
                     \draw [->] (bm1) -| (s2.135);
                 \end{tikzpicture}}
+            \caption{\label{dia:contro3}Diagrama de bloques de una representación en espacio de estados, en su forma controlador.}
         \end{figure*}
 
         \begin{description}
@@ -717,6 +726,8 @@
                 \end{pmatrix} \implies \det{C_{(A_c, b_c)}} = 1
             \end{equation}
         \end{description}
+
+%-------------------------------------------------------------------------------
 
         \subsection{Forma canónica controlabilidad}
 

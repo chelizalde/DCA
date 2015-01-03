@@ -1,7 +1,10 @@
+%-------------------------------------------------------------------------------
+%	EMPIEZA CAPITULO
+%-------------------------------------------------------------------------------
 
 \chapter{Compensador Adelanto/Atraso (LR)}
 
-    El concepto de fase surge del análisis del lugar de las raices, al pensar que el angulo que tiene un conjunto de raices complejas conjugadas con respecto al ejereal positivo es la fase, es decir, el angulo del fasor. De esta manera, podemos modificar el comportamiento de un sistema agregando dinámicas al sistema ayudandolo a mover el lugar geométrico de las reaices hacia donde lo necesitemos.
+    El concepto de fase surge del análisis del lugar de las raices, al pensar que el angulo que tiene un conjunto de raices complejas conjugadas con respecto al eje real positivo es la fase, es decir, el angulo del fasor. De esta manera, podemos modificar el comportamiento de un sistema agregando dinámicas al sistema ayudandolo a mover el lugar geométrico de las raices hacia donde lo necesitemos.
 
     El adelanto de fase pues, será un comportamiento demasiado rápido y subamortiguado y el atraso de fase demasiado lento y sobreamortiguado, por lo que agregaremos polos que atraigan el lugar de las raices y que modifiquen la fase para adelantarla (si es un comportamiento demasiado lento o sobreamortiguado) o atrasarla (si es un comportamiento demasiado rapido o subamortiguado).
 
@@ -10,11 +13,7 @@
     \begin{figure}
         \centering
         \resizebox{0.6\textwidth}{!}{
-            \tikzstyle{input} = [coordinate]
-            \tikzstyle{output} = [coordinate]
             \tikzstyle{block} = [draw, rectangle, minimum height=3em, minimum width=4em]
-            \tikzstyle{sum} = [draw, circle]
-            \tikzstyle{init} = [pin edge={to-, thin, black}]
 
             \begin{tikzpicture}[auto, node distance=2cm, >=latex']
                 \node [input, name=entrada] {};
@@ -24,14 +23,19 @@
                 \node [output, right of=planta] (salida) {};
                 \node [block, below of=planta] (retro) {$-1$};
 
-                \draw [->] (entrada) -- node[name=u] {$x(s)$} (suma);
+                \draw [->] (entrada) -- node[name=u] {$r(s)$} (suma);
                 \draw [->] (suma) -- (ganancia);
                 \draw [->] (ganancia) -- (planta);
                 \draw [->] (planta) -- node[name=y] {$y(s)$} (salida);
                 \draw [->] (y) |- (retro);
                 \draw [->] (retro) -| (suma);
             \end{tikzpicture}}
+        \caption{\label{dia:caa1}Planta con controlador proporcional y realimentación unitaria.}
     \end{figure}
+
+%-------------------------------------------------------------------------------
+%	EMPIEZA SECCION
+%-------------------------------------------------------------------------------
 
     \newpage
     \section{Compensador de adelanto de fase}
@@ -41,11 +45,7 @@
         \begin{figure}
             \centering
             \resizebox{0.6\textwidth}{!}{
-                \tikzstyle{input} = [coordinate]
-                \tikzstyle{output} = [coordinate]
                 \tikzstyle{block} = [draw, rectangle, minimum height=3em, minimum width=4em]
-                \tikzstyle{sum} = [draw, circle]
-                \tikzstyle{init} = [pin edge={to-, thin, black}]
 
                 \begin{tikzpicture}[auto, node distance=2cm, >=latex']
                     \node [input, name=entrada] {};
@@ -55,13 +55,14 @@
                     \node [output, right of=planta] (salida) {};
                     \node [block, below of=planta] (retro) {$-1$};
 
-                    \draw [->] (entrada) -- node[name=u] {$x(s)$} (suma);
+                    \draw [->] (entrada) -- node[name=u] {$r(s)$} (suma);
                     \draw [->] (suma) -- (ganancia);
                     \draw [->] (ganancia) -- (planta);
                     \draw [->] (planta) -- node[name=y] {$y(s)$} (salida);
                     \draw [->] (y) |- (retro);
                     \draw [->] (retro) -| (suma);
                 \end{tikzpicture}}
+            \caption{\label{dia:caa2}Planta con compensador y realimentación unitaria.}
         \end{figure}
 
         Tenemos que el controlador es de la forma:
@@ -74,16 +75,22 @@
 
         Dadas estas condiciones, el lugar de las raíces de los polos y ceros\footnote{El cero atrae el lugar de las raices hacia la izquierda.} agregados se verán como en la figura.
 
-        \begin{figure}
+        \begin{marginfigure}
             \centering
-            \includegraphics[width=0.7\textwidth]{./imagenes/adelantopoloycero.pdf}
+            \includegraphics[width=\textwidth]{./imagenes/adelantopoloycero.pdf}
             \caption{\label{fig:adelantopoloycero}Polo y cero introducidos por el compensador de adelanto de fase.}
-        \end{figure}
+        \end{marginfigure}
 
         Dado este controlador se pueden modificar el comportamiento del sistema para hacerlo tan rápido como sea necesario. El calculo de los parametros $T$ y $\alpha$ será explicado con un ejemplo.
 
+%-------------------------------------------------------------------------------
+
         \subsection{Ejemplo}
         \faltante{Falta escribir apunte}
+
+%-------------------------------------------------------------------------------
+%	EMPIEZA SECCION
+%-------------------------------------------------------------------------------
 
     \newpage
     \section{Compensador de atraso de fase}
@@ -93,11 +100,7 @@
         \begin{figure}
             \centering
             \resizebox{0.6\textwidth}{!}{
-                \tikzstyle{input} = [coordinate]
-                \tikzstyle{output} = [coordinate]
                 \tikzstyle{block} = [draw, rectangle, minimum height=3em, minimum width=4em]
-                \tikzstyle{sum} = [draw, circle]
-                \tikzstyle{init} = [pin edge={to-, thin, black}]
 
                 \begin{tikzpicture}[auto, node distance=2cm, >=latex']
                     \node [input, name=entrada] {};
@@ -107,13 +110,14 @@
                     \node [output, right of=planta] (salida) {};
                     \node [block, below of=planta] (retro) {$-1$};
 
-                    \draw [->] (entrada) -- node[name=u] {$x(s)$} (suma);
+                    \draw [->] (entrada) -- node[name=u] {$r(s)$} (suma);
                     \draw [->] (suma) -- (ganancia);
                     \draw [->] (ganancia) -- (planta);
                     \draw [->] (planta) -- node[name=y] {$y(s)$} (salida);
                     \draw [->] (y) |- (retro);
                     \draw [->] (retro) -| (suma);
                 \end{tikzpicture}}
+            \caption{\label{dia:caa3}Planta con ccompensador y realimentación unitaria.}
         \end{figure}
 
         Tenemos que el controlador es de la forma:
@@ -126,11 +130,11 @@
 
         Dadas estas condiciones, el lugar de las raíces de los polos y ceros agregados se verán como en la figura.
 
-        \begin{figure}
+        \begin{marginfigure}
             \centering
-            \includegraphics[width=0.7\textwidth]{./imagenes/atrasopoloycero.pdf}
+            \includegraphics[width=\textwidth]{./imagenes/atrasopoloycero.pdf}
             \caption{\label{fig:atrasopoloycero}Polo y cero introducidos por el compensador de atraso de fase.}
-        \end{figure}
+        \end{marginfigure}
 
         Si el cero y el polo están muy cercanos, entonces para $s=s_1$ un polo dominante en lazo cerrado, se tiene que la magnitud del sistema:
 
@@ -146,6 +150,8 @@
 
         Por lo que se puede aumentar la ganancia en el polo del sistema, sin sufrir un corrimiento considerable en el lugar de las raíces.
 
+%-------------------------------------------------------------------------------
+
         \subsection{Error estático de posición $k_p$}
 
             Para el sistema dado:
@@ -153,11 +159,7 @@
             \begin{figure}
                 \centering
                 \resizebox{0.6\textwidth}{!}{
-                    \tikzstyle{input} = [coordinate]
-                    \tikzstyle{output} = [coordinate]
                     \tikzstyle{block} = [draw, rectangle, minimum height=3em, minimum width=4em]
-                    \tikzstyle{sum} = [draw, circle]
-                    \tikzstyle{init} = [pin edge={to-, thin, black}]
 
                     \begin{tikzpicture}[auto, node distance=2cm, >=latex']
                         \node [input, name=entrada] {};
@@ -166,18 +168,19 @@
                         \node [output, right of=planta] (salida) {};
                         \node [block, below of=planta] (retro) {$-1$};
 
-                        \draw [->] (entrada) -- node[name=u] {$x(s)$} (suma);
+                        \draw [->] (entrada) -- node[name=u] {$r(s)$} (suma);
                         \draw [->] (suma) -- (planta);
                         \draw [->] (planta) -- node[name=y] {$y(s)$} (salida);
                         \draw [->] (y) |- (retro);
                         \draw [->] (retro) -| (suma);
                     \end{tikzpicture}}
+                \caption{\label{dia:caa4}Planta con realimentación unitaria.}
             \end{figure}
 
             con una entrada de tipo escalón:
 
             \begin{equation*}
-                x(s) = \frac{1}{s}
+                r(s) = \frac{1}{s}
             \end{equation*}
 
             y un sistema $G(s)$:
@@ -192,7 +195,28 @@
                 e_{ss} = \lim_{s \to 0} s \left( \frac{1}{1 + G(s)} \frac{1}{s} \right) = \lim_{s \to 0} \frac{1}{1 + G(s)} = \frac{1}{1 + G(0)} = \frac{1}{1 + k_p}
             \end{equation*}
 
+            \missingfigure{Gráfica de escalon unitario con error en estado estacionario.}
+
+%-------------------------------------------------------------------------------
+
         \subsection{Error estático de velocidad $k_v$}
-        \faltante{Falta escribir apunte}
+            El error en estado permanente a una entrada rampa unitaria es:
+
+            \begin{equation*}
+                r(s) = \frac{1}{s^2}
+            \end{equation*}
+
+            \begin{equation*}
+                e_{ss} = \lim_{s \to 0} s \left( \frac{1}{a + G(s)} \frac{1}{s^2} \right) = \lim_{s \to 0} \frac{1}{s + s G(s)} = \lim_{s \to 0} \frac{1}{s G(s)} = \frac{1}{k_v}
+            \end{equation*}
+
+            \begin{equation*}
+                k_v = \lim_{s \to 0} s G(s)
+            \end{equation*}
+
+            \missingfigure{Gráfica de rampa unitaria con error en estado estacionario.}
+
+%-------------------------------------------------------------------------------
+
         \subsection{Ejemplo}
         \faltante{Falta escribir apunte}

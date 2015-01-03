@@ -1,3 +1,6 @@
+%-------------------------------------------------------------------------------
+%	EMPIEZA CAPITULO
+%-------------------------------------------------------------------------------
 
 \chapter{Inobservabilidad y observador de estado}
 
@@ -13,17 +16,7 @@
 	\begin{figure}
     \centering
     \resizebox{\textwidth}{!}{
-	    \tikzstyle{input} = [coordinate]
-        \tikzstyle{output} = [coordinate]
         \tikzstyle{block} = [draw, rectangle, minimum height=3em, minimum width=4em]
-        \tikzstyle{sum} = [draw, circle]
-        \tikzstyle{init} = [pin edge={to-, thin, black}]
-        \tikzstyle{vecArrow} = [thick, decoration={markings,mark=at position
-             1 with {\arrow[semithick]{open triangle 60}}},
-             double distance=1.4pt, shorten >= 5.5pt,
-             preaction = {decorate},
-             postaction = {draw,line width=1.4pt, white,shorten >= 4.5pt}]
-        \tikzstyle{innerWhite} = [semithick, white,line width=1.4pt, shorten >= 4.5pt]
 
         \begin{tikzpicture}[auto, node distance=2cm, >=latex']
             \node [input, name=entrada] {};
@@ -54,9 +47,10 @@
             \draw [innerWhite] (v) |- (a);
             \draw [innerWhite] (a) -| (s1);
         \end{tikzpicture}}
+	\caption{\label{dia:inob1}Diagrama de bloques de una representación en espacio de estados simplificado.}
 	\end{figure}
 
-	donde $x \in \mathbbm{R}^n$ es el estado, $u(t) \in \mathbbm{R}^n$ y $y(t) \in \mathbbm{R}^n$ sean la entrada y salida respectivamente; siendo la condición inicial del estado $x(0) = x_0 \in \mathbbm{R}^n$. La solución esta descrita por:
+	donde $x \in \mathbb{R}^n$ es el estado, $u(t) \in \mathbb{R}^n$ y $y(t) \in \mathbb{R}^n$ sean la entrada y salida respectivamente; siendo la condición inicial del estado $x(0) = x_0 \in \mathbb{R}^n$. La solución esta descrita por:
 
 	\begin{equation*}
 		x(t) = \exp{(At)} x_0 + \int_0^t \exp{\left(A(t - \tau)\right)} b u(\tau) d\tau
@@ -64,7 +58,7 @@
 
 	\paragraph{Problema.}
 
-	Sea la representación de estado ~\ref{eq:inob1}, donde el estado $x$ no esta disponible. Se desea reconstruir el estado $x$, para poder aplicar una retroalimentación de estado.
+	Sea la representación de estado de la ecuación~\ref{eq:inob1}, donde el estado $x$ no esta disponible. Se desea reconstruir el estado $x$, para poder aplicar una retroalimentación de estado.
 
 	\begin{equation}
 		u = f^T x + v
@@ -72,179 +66,192 @@
 
 	Para resolver este problema, hay que investigar el concepto estructural de la inobservabilidad.
 
+%-------------------------------------------------------------------------------
+%	EMPIEZA SECCION
+%-------------------------------------------------------------------------------
+
 	\newpage
     \section{Observabilidad e inobservabilidad}
 
-    Una representación de estado se dice observable si dadas las trayectorias de salida, $y(t)$, y entrada, $u(t)$, en un horizonte de tiempo finito, $t_1 \in \mathbbm{R}$, $t_1 > 0$, existe una función $\mathbbm{F}(t, u, y)$, tal que:
+	    Una representación de estado se dice observable si dadas las trayectorias de salida, $y(t)$, y entrada, $u(t)$, en un horizonte de tiempo finito, $t_1 \in \mathbb{R}$, $t_1 > 0$, existe una función $\mathbb{F}(t, u, y)$, tal que:
 
-    \begin{equation}
-    	\mathbbm{F}(t_1, u(t), y(t)) = x(0) \quad t \in [0, t_1]
-    \end{equation}
+	    \begin{equation}
+	    	\mathbb{F}(t_1, u(t), y(t)) = x(0) \quad t \in [0, t_1]
+	    \end{equation}
 
-    Una representación de estado se dice inobservable, si no es observable.
+		\missingfigure{Trayectorias de entrada y salida del sistema a una condición requerida desde una condicion inicial general}
 
-    \begin{eqnarray} \label{eq:inob2}
-		x(t) = \exp{(At)} x_0 + \int_0^t \exp{\left(A(t - \tau)\right)} b u(\tau) d\tau \nonumber \\
-		y(t) = c^T \exp{(At)} x_0 + \int_0^t c^T \exp{\left(A(t - \tau)\right)} b u(\tau) d\tau +d u(t)
-	\end{eqnarray}
 
-	Sabemos del teorema de Caley-Hamilton que:
+		\missingfigure{Trayectoria del estado del sistema atraves del tiempo}
 
-	\begin{equation} \label{eq:inob3}
-		\exp{(At)} = \sum_{i=0}^{n-1} \varphi(t) A^i
-	\end{equation}
+	    Una representación de estado se dice inobservable, si no es observable.
 
-	donde:
+	    \begin{eqnarray} \label{eq:inob2}
+			x(t) = \exp{(At)} x_0 + \int_0^t \exp{\left(A(t - \tau)\right)} b u(\tau) d\tau \nonumber \\
+			y(t) = c^T \exp{(At)} x_0 + \int_0^t c^T \exp{\left(A(t - \tau)\right)} b u(\tau) d\tau +d u(t)
+		\end{eqnarray}
 
-	\begin{equation*}
-		\varphi_i(t) = \sum_{j=0}^{\infty} \varphi_{ij} t^j, \quad \varphi_{ij} \in \mathbbm{R}, \quad i \in \{ 0, 1, \dots , n-1 \}, \quad j \in \mathbbm{Z}^+
-	\end{equation*}
+		Sabemos del teorema de Caley-Hamilton que:
 
-	Si juntamos las ecuaciones ~\ref{eq:inob2} y ~\ref{eq:inob3} obtendremos:
+		\begin{equation} \label{eq:inob3}
+			\exp{(At)} = \sum_{i=0}^{n-1} \varphi(t) A^i
+		\end{equation}
 
-	\begin{multline*}
-		y(t_1) = \sum_{i=0}^{n-1} \varphi_i (t_1) c^T A^i x_0 + \\
-		\int_0^{t_1} c^T \exp{\left(A(t - \tau)\right)} b u(\tau) d\tau +d u(t_1) = \\
-		\begin{pmatrix}
-			\varphi_0(t_1) & \varphi_1(t_1) & \dots & \varphi_{n-1}(t_1)
-		\end{pmatrix}
-		\begin{pmatrix}
-			c^T \\
-			c^T A \\
-			\vdots \\
-			c^T A^{n-1}
-		\end{pmatrix} x_0 + \\
-		\int_0^{t_1} c^T \exp{\left(A(t - \tau)\right)} b u(\tau) d\tau +d u(t_1)
-	\end{multline*}
+		donde:
 
-	\begin{equation} \label{eq:inob4}
-		\varphi^T(t_1) \mathcal{O}_{(c^T, A)} x(0) = y(t_1) - \int_0^{t_1} c^T \exp{\left(A(t - \tau)\right)} b u(\tau) d\tau +d u(t_1)
-	\end{equation}
+		\begin{equation*}
+			\varphi_i(t) = \sum_{j=0}^{\infty} \varphi_{ij} t^j, \quad \varphi_{ij} \in \mathbb{R}, \quad i \in \{ 0, 1, \dots , n-1 \}, \quad j \in \mathbb{Z}^+
+		\end{equation*}
 
-	siendo el lado derecho, la función $\mathbbm{F}$. Entonces, una condición necesaia para que se pueda inferir cualquier condición inicial del estado $x(0) = x_0$, a partir de las trayectorias de salida, $y(t)$, y de entrada ,$u(t)$, en el horizonte de tiempo, es que la matriz de observabilidad:
+		Si juntamos las ecuaciones ~\ref{eq:inob2} y ~\ref{eq:inob3} obtendremos:
 
-	\begin{equation}
-		\mathcal{O}_{(c^T, A)} =
-		\begin{pmatrix}
-			c^T \\
-			c^T A \\
-			\vdots \\
-			c^T A^{n-1}
-		\end{pmatrix}
-	\end{equation}
+		\begin{multline*}
+			y(t_1) = \sum_{i=0}^{n-1} \varphi_i (t_1) c^T A^i x_0 + \\
+			\int_0^{t_1} c^T \exp{\left(A(t - \tau)\right)} b u(\tau) d\tau +d u(t_1) = \\
+			\begin{pmatrix}
+				\varphi_0(t_1) & \varphi_1(t_1) & \dots & \varphi_{n-1}(t_1)
+			\end{pmatrix}
+			\begin{pmatrix}
+				c^T \\
+				c^T A \\
+				\vdots \\
+				c^T A^{n-1}
+			\end{pmatrix} x_0 + \\
+			\int_0^{t_1} c^T \exp{\left(A(t - \tau)\right)} b u(\tau) d\tau +d u(t_1)
+		\end{multline*}
 
-	sea de rango pleno por columnas.
+		\begin{equation} \label{eq:inob4}
+			\varphi^T(t_1) \mathcal{O}_{(c^T, A)} x(0) = y(t_1) - \int_0^{t_1} c^T \exp{\left(A(t - \tau)\right)} b u(\tau) d\tau +d u(t_1)
+		\end{equation}
 
-	En nuestro caso particular, como la entrada y la salida estan en $\mathbbm{R}$, esta condición es:
+		siendo el lado derecho, la función $\mathbb{F}$. Entonces, una condición necesaia para que se pueda inferir cualquier condición inicial del estado $x(0) = x_0$, a partir de las trayectorias de salida, $y(t)$, y de entrada ,$u(t)$, en el horizonte de tiempo, es que la matriz de observabilidad:
 
-	\begin{equation*}
-		\det{\mathcal{O}_{(c^T, A)}} \ne 0
-	\end{equation*}
+		\begin{equation}
+			\mathcal{O}_{(c^T, A)} =
+			\begin{pmatrix}
+				c^T \\
+				c^T A \\
+				\vdots \\
+				c^T A^{n-1}
+			\end{pmatrix}
+		\end{equation}
 
-	En efecto, si $\mathcal{O}_{(c^T, A)}$, no es de rango pleno por columna, existe una transformación $T$, invertible, tal que:
+		sea de rango pleno por columnas.
 
-	\begin{equation*}
-		\mathcal{O}_{(c^T, A)} T^{-1} =
-		\begin{pmatrix}
-			\mathbbm{X} & 0
-		\end{pmatrix}
-	\end{equation*}
+		En nuestro caso particular, como la entrada y la salida estan en $\mathbb{R}$, esta condición es:
 
-	siendo $\mathbbm{X}$ una matriz de rango plano por columnas.
+		\begin{equation*}
+			\det{\mathcal{O}_{(c^T, A)}} \ne 0
+		\end{equation*}
 
-	Haciendo el cambio de base, $\bar{x} = T x$, se obtiene de la ecuación ~\ref{eq:inob4}:
+		En efecto, si $\mathcal{O}_{(c^T, A)}$, no es de rango pleno por columna, existe una transformación $T$, invertible, tal que:
 
-	\begin{eqnarray*}
-		\varphi^T(t_1) \mathcal{O}_{(c^T, A)} T^{-1} \bar{x}(0) & = & \bar{\mathbbm{F}}(t_1, u, y) \\
-		\varphi^T(t_1)
-		\begin{pmatrix}
-		 	\mathbbm{X} & 0
-		\end{pmatrix}
-		\begin{pmatrix}
-		 	\bar{x}_1(0) \\
-		 	\bar{x}_2(0)
-		\end{pmatrix} & = & \bar{\mathbbm{F}}(t_1, u, y) \\
-		\varphi^T(t_1) \mathbbm{X} \bar{x}_1(0) & = & \bar{\mathbbm{F}}(t_1, u, y)
-	\end{eqnarray*}
+		\begin{equation*}
+			\mathcal{O}_{(c^T, A)} T^{-1} =
+			\begin{pmatrix}
+				\mathbb{X} & 0
+			\end{pmatrix}
+		\end{equation*}
 
-	por lo que no es posible determinar la segunda parte de componentes, $\bar{x}_2(0)$, a partir de $\bar{\mathbbm{F}}(t_1, u, y)$.
+		siendo $\mathbb{X}$ una matriz de rango plano por columnas.
 
-	Si la matriz de observabilidad es de rango pleno por columnas, entonces:
+		Haciendo el cambio de base, $\bar{x} = T x$, se obtiene de la ecuación ~\ref{eq:inob4}:
 
-	\begin{equation*}
-		\ker{\mathcal{O}_{(c^T, A)}} = {0}
-	\end{equation*}
+		\begin{eqnarray*}
+			\varphi^T(t_1) \mathcal{O}_{(c^T, A)} T^{-1} \bar{x}(0) & = & \bar{\mathbb{F}}(t_1, u, y) \\
+			\varphi^T(t_1)
+			\begin{pmatrix}
+			 	\mathbb{X} & 0
+			\end{pmatrix}
+			\begin{pmatrix}
+			 	\bar{x}_1(0) \\
+			 	\bar{x}_2(0)
+			\end{pmatrix} & = & \bar{\mathbb{F}}(t_1, u, y) \\
+			\varphi^T(t_1) \mathbb{X} \bar{x}_1(0) & = & \bar{\mathbb{F}}(t_1, u, y)
+		\end{eqnarray*}
 
-	y para nuestro caso particular, $u, y \in \mathbbm{R}$:
+		por lo que no es posible determinar la segunda parte de componentes, $\bar{x}_2(0)$, a partir de $\bar{\mathbb{F}}(t_1, u, y)$.
 
-	\begin{equation*}
-		\det{\mathcal{O}_{(c^T, A)}} \ne 0
-	\end{equation*}
+		Si la matriz de observabilidad es de rango pleno por columnas, entonces\footnote{Este es un resultado del teorema de espacios vectoriales que indica que $\dim{V} = \dim{\ker{T}} + \dim{\imagen{T}}$, y que lo que queremos es que $\dim{V} = \dim{\imagen{T}}$}:
 
-	es decir, $\mathcal{O}_{(c^T, A)}$ es invertible.
+		\begin{equation*}
+			\ker{\mathcal{O}_{(c^T, A)}} = {0}
+		\end{equation*}
 
-	De la representación de estado en la ecuación ~\ref{eq:inob1} se tiene:
+		y para nuestro caso particular, $u, y \in \mathbb{R}$:
 
-	\begin{equation*}
-		y = c^T x + d u
-	\end{equation*}
+		\begin{equation*}
+			\det{\mathcal{O}_{(c^T, A)}} \ne 0
+		\end{equation*}
 
-	\begin{eqnarray*}
-		\frac{dy}{dt} & = & c^T \frac{dx}{dt} + d \frac{du}{dt} \\
-		& = & c^T A x + c^T b u + d \frac{du}{dt}
-	\end{eqnarray*}
+		es decir, $\mathcal{O}_{(c^T, A)}$ es invertible.
 
-	\begin{eqnarray*}
-		\frac{d^2y}{dt^2} & = & c^T A \frac{dx}{dt} + c^T b \frac{du}{dt} + d \frac{d^2u}{dt^2} \\
-		& = & c^T A^2 x + c^T A b u + c^T b \frac{du}{dt} + d \frac{d^2u}{dt^2}
-	\end{eqnarray*}
+		De la representación de estado en la ecuación ~\ref{eq:inob1} se tiene:
 
-	\begin{equation*}
-		\vdots
-	\end{equation*}
+		\begin{equation*}
+			y = c^T x + d u
+		\end{equation*}
 
-	\begin{equation*}
-		\frac{d^{n-1}y}{dt^{n-1}} = c^T A^{n-1} x + \sum_{i=0}^{n-2} c^T A^i b \frac{d^{n-2-i}u}{dt^{n-2-i}}
-	\end{equation*}
+		\begin{eqnarray*}
+			\frac{dy}{dt} & = & c^T \frac{dx}{dt} + d \frac{du}{dt} \\
+			& = & c^T A x + c^T b u + d \frac{du}{dt}
+		\end{eqnarray*}
 
-	por lo que tendremos que:
+		\begin{eqnarray*}
+			\frac{d^2y}{dt^2} & = & c^T A \frac{dx}{dt} + c^T b \frac{du}{dt} + d \frac{d^2u}{dt^2} \\
+			& = & c^T A^2 x + c^T A b u + c^T b \frac{du}{dt} + d \frac{d^2u}{dt^2}
+		\end{eqnarray*}
 
-	\begin{equation*}
-		\begin{pmatrix}
-			1 \\
-			\frac{d}{dt} \\
-			\vdots \\
-			\frac{d^{n-1}}{dt^{n-1}}
-		\end{pmatrix} y =
-		\begin{pmatrix}
-			c^T \\
-			c^T A \\
-			\vdots \\
-			c^T A^{n-1}
-		\end{pmatrix} x +
-		\begin{pmatrix}
-			0 + d \\
-			b + d \frac{d}{dt} \\
-			\vdots \\
-			\sum_{i=0}^{n-2} c^T A^i b \frac{d^{n-2-i}}{dt^{n-2-i}} + d \frac{d^{n-1}}{dt^{n-1}}
-		\end{pmatrix} u
-	\end{equation*}
+		\begin{equation*}
+			\vdots
+		\end{equation*}
 
-	o escrito de otra manera:
+		\begin{equation*}
+			\frac{d^{n-1}y}{dt^{n-1}} = c^T A^{n-1} x + \sum_{i=0}^{n-2} c^T A^i b \frac{d^{n-2-i}u}{dt^{n-2-i}}
+		\end{equation*}
 
-	\begin{equation*}
-		\Delta \left( \frac{d}{dt} \right) y = \mathcal{O}_{(c^T, A)} x + \Gamma \left( \frac{d}{dt} \right) u
-	\end{equation*}
+		por lo que tendremos que:
 
-	lo cual implica:
+		\begin{equation*}
+			\begin{pmatrix}
+				1 \\
+				\frac{d}{dt} \\
+				\vdots \\
+				\frac{d^{n-1}}{dt^{n-1}}
+			\end{pmatrix} y =
+			\begin{pmatrix}
+				c^T \\
+				c^T A \\
+				\vdots \\
+				c^T A^{n-1}
+			\end{pmatrix} x +
+			\begin{pmatrix}
+				0 + d \\
+				b + d \frac{d}{dt} \\
+				\vdots \\
+				\sum_{i=0}^{n-2} c^T A^i b \frac{d^{n-2-i}}{dt^{n-2-i}} + d \frac{d^{n-1}}{dt^{n-1}}
+			\end{pmatrix} u
+		\end{equation*}
 
-	\begin{equation}
-		x = \mathcal{O}_{(c^T, A)}^{-1} \left[ \Delta \left( \frac{d}{dt} \right) y - \Gamma \left( \frac{d}{dt} \right) u \right]
-	\end{equation}
+		o escrito de otra manera:
 
-	Por lo que es una condición necesaria y suficiente, para que la representación de estado sea observable que su matriz de observabilidad, $\mathcal{O}_{(c^T, A)}$, sea de rango pleno por columnas.
+		\begin{equation*}
+			\Delta \left( \frac{d}{dt} \right) y = \mathcal{O}_{(c^T, A)} x + \Gamma \left( \frac{d}{dt} \right) u
+		\end{equation*}
 
-	Cuando la matriz de observabilidad es de rango pleno por columnas, se dice que el par $(c^T, A)$ es observable.
+		lo cual implica:
+
+		\begin{equation}
+			x = \mathcal{O}_{(c^T, A)}^{-1} \left[ \Delta \left( \frac{d}{dt} \right) y - \Gamma \left( \frac{d}{dt} \right) u \right]
+		\end{equation}
+
+		Por lo que es una condición necesaria y suficiente, para que la representación de estado sea observable que su matriz de observabilidad, $\mathcal{O}_{(c^T, A)}$, sea de rango pleno por columnas.
+
+		Cuando la matriz de observabilidad es de rango pleno por columnas, se dice que el par $(c^T, A)$ es observable.
+
+%-------------------------------------------------------------------------------
+%	EMPIEZA SECCION
+%-------------------------------------------------------------------------------
 
     \newpage
     \section{Dualidad}
@@ -287,7 +294,7 @@
 			\end{pmatrix} = \mathcal{O}_{(b^T, A^T)}
 		\end{equation}
 
-		note tambien que la función de transferencia es una funcion continua en $\mathbbm{R}^1$, por lo que:
+		note tambien que la función de transferencia es una funcion continua en $\mathbb{R}^1$, por lo que:
 
 		\begin{equation*}
 			FT = FT^T
@@ -325,6 +332,10 @@
 			f^T \leftrightarrow k^T
 		\end{equation*}
 
+%-------------------------------------------------------------------------------
+%	EMPIEZA SECCION
+%-------------------------------------------------------------------------------
+
     \newpage
     \section{Propiedades de la matriz de observabilidad}
 
@@ -334,13 +345,13 @@
 			\item Asignación de los valores propios (polos), mediante la inyección de salida.
 
 			\begin{enumerate}
-				\item Si $\det{C_{(A, b)}} \ne 0$, entonces dado un conjunto simetrico con respecto al eje real de $n$ numeros complejos, $\Lambda$, existe un vector $f \in \mathbbm{R}^n$, tal que:
+				\item Si $\det{C_{(A, b)}} \ne 0$, entonces dado un conjunto simetrico con respecto al eje real de $n$ numeros complejos, $\Lambda$, existe un vector $f \in \mathbb{R}^n$, tal que:
 
 				\begin{equation*}
 					\sigma(A + b f^T) = \Lambda
 				\end{equation*}
 
-				\item Si $\det{\mathcal{O}_{(c^T, A)}} \ne 0$, entonces dado un conjunto simetrico con respecto al eje real de $n$ numeros complejos, $\Lambda$, existe un vector $k \in \mathbbm{R}^n$, tal que:
+				\item Si $\det{\mathcal{O}_{(c^T, A)}} \ne 0$, entonces dado un conjunto simetrico con respecto al eje real de $n$ numeros complejos, $\Lambda$, existe un vector $k \in \mathbb{R}^n$, tal que:
 
 				\begin{equation*}
 					\sigma(A + k c^T) = \Lambda
@@ -379,13 +390,27 @@
 			\item Invarianza de los ceros del sistema bajo iyección de salida
 		\end{enumerate}
 
+%-------------------------------------------------------------------------------
+%	EMPIEZA SECCION
+%-------------------------------------------------------------------------------
+
     \newpage
     \section{Formas canónicas}
 	\faltante{Falta escribir apunte}
+
+%-------------------------------------------------------------------------------
+
         \subsection{Forma canónica observador}
 		\faltante{Falta escribir apunte}
+
+%-------------------------------------------------------------------------------
+
         \subsection{Forma canónica observabilidad}
 		\faltante{Falta escribir apunte}
+
+%-------------------------------------------------------------------------------
+%	EMPIEZA SECCION
+%-------------------------------------------------------------------------------
 
     \newpage
     \section{Observador de estado}
